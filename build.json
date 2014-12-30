@@ -43,8 +43,7 @@
       "src": [
         "src/externals/when/when.js",
         "src/externals/gl-matrix/gl-matrix.js",
-        "src/externals/jquery/dist/jquery.js",
-        "src/externals/playtomic/playtomic.v1.9.js"
+        "src/externals/jquery/dist/jquery.js"
       ],
       "prehint": false,
       "posthint": false,
