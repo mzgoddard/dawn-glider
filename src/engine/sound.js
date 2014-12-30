@@ -15,16 +15,18 @@ var SoundContext = aqua.type(aqua.type.Base,
         var clipsDefer = when.defer();
         
         when.chain(when.all([
-          when(load.data('music/happy.ogg'), this._loadClip.bind(this, 'happy')),
-          when(load.data('music/zone.ogg'), this._loadClip.bind(this, 'zone')),
-          when(load.data('music/approach_danger.ogg'), this._loadClip.bind(this, 'approach')),
-          when(load.data('music/danger.ogg'), this._loadClip.bind(this, 'danger'))
+          when(load.data('music/happy.ogg')).then(this._loadClip.bind(this, 'happy')),
+          when(load.data('music/zone.ogg')).then(this._loadClip.bind(this, 'zone')),
+          when(load.data('music/approach_danger.ogg')).then(this._loadClip.bind(this, 'approach')),
+          when(load.data('music/danger.ogg')).then(this._loadClip.bind(this, 'danger'))
         ]), clipsDefer);
         
-        clipsDefer.then(this._playAll.bind(this));
+        clipsDefer
+          .then(this._playAll.bind(this))
+          .then(null, console.error.bind(console));
         
         this.nodes = {
-          main: this.context.createGainNode()
+          main: this.context.createGain()
         };
         
         this.nodes.main.connect(this.context.destination);
@@ -61,24 +63,31 @@ var SoundContext = aqua.type(aqua.type.Base,
     _loadClip: function(name, clip) {
       var node = this.nodes[name] = {
         source: this.context.createBufferSource(),
-        buffer: this.context.createBuffer(clip, false)
+        gain: this.context.createGain(),
       };
-      
-      node.source.connect(this.nodes.main);
-      node.source.buffer = node.buffer;
+
+      var defer = when.defer();
+      this.context.decodeAudioData(clip, function(buffer) {
+        node.buffer = buffer;
+        node.source.connect(node.gain);
+        node.gain.connect(this.nodes.main);
+        node.source.buffer = buffer;
+        defer.resolve();
+      }.bind(this), function(e) { console.error(e); });
+      return defer.promise;
     },
     _playAll: function() {
-      this.nodes.happy.source.noteOn(0);
-      this.nodes.zone.source.noteOn(0);
-      this.nodes.approach.source.noteOn(0);
-      
+      this.nodes.happy.source.start(0);
+      this.nodes.zone.source.start(0);
+      this.nodes.approach.source.start(0);
+
       this.nodes.happy.source.loop = true;
       this.nodes.zone.source.loop = true;
       this.nodes.approach.source.loop = true;
-      
-      this.nodes.happy.source.gain.value = 0;
-      this.nodes.zone.source.gain.value = 0;
-      this.nodes.approach.source.gain.value = 0;
+
+      this.nodes.happy.gain.value = 0;
+      this.nodes.zone.gain.value = 0;
+      this.nodes.approach.gain.value = 0;
     }
   }
 );

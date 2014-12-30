@@ -138,9 +138,9 @@ var GliderMove = aqua.type(aqua.Component,
       }
       
       if (aqua.game.sound) {
-        aqua.game.sound.nodes.happy.source.gain.value = 1;
-        aqua.game.sound.nodes.zone.source.gain.value = 0;
-        aqua.game.sound.nodes.approach.source.gain.value = 0;
+        aqua.game.sound.nodes.happy.gain.value = 1;
+        aqua.game.sound.nodes.zone.gain.value = 0;
+        aqua.game.sound.nodes.approach.gain.value = 0;
       }
     },
     oncollision: function(otherParticle, collision) {
@@ -265,12 +265,12 @@ var GliderMove = aqua.type(aqua.Component,
       
       if (this.sound.nodes) {
         if (this.sound.nodes.happy)
-          this.sound.nodes.happy.source.gain.value = Math.clamp(Math.lerp(0, 1, fadeHappy), 0, 1);
+          this.sound.nodes.happy.gain.value = Math.clamp(Math.lerp(0, 1, fadeHappy), 0, 1);
         if (this.sound.nodes.zone) {
-          this.sound.nodes.zone.source.gain.value = Math.clamp(Math.lerp(0, 1, Math.lerp((1-fadeHappy), 0, 1-Math.sqrt(fadeApproach))), 0, 1);
+          this.sound.nodes.zone.gain.value = Math.clamp(Math.lerp(0, 1, Math.lerp((1-fadeHappy), 0, 1-Math.sqrt(fadeApproach))), 0, 1);
         }
         if (this.sound.nodes.approach) {
-          this.sound.nodes.approach.source.gain.value = Math.clamp(Math.lerp(1, 0, fadeApproach), 0, 1);
+          this.sound.nodes.approach.gain.value = Math.clamp(Math.lerp(1, 0, fadeApproach), 0, 1);
         }
       }
       
