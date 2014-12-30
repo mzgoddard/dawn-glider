@@ -63,7 +63,7 @@ var SoundContext = aqua.type(aqua.type.Base,
     _loadClip: function(name, clip) {
       var node = this.nodes[name] = {
         source: this.context.createBufferSource(),
-        gain: this.context.createGain(),
+        gain: this.context.createGain()
       };
 
       var defer = when.defer();

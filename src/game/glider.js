@@ -396,20 +396,7 @@ var GliderScore = aqua.type(aqua.Component,
           setter: function(div) {
             div.text(parseInt(this.score, 10));
           },
-          init: function(div) {
-            if (this.move) {
-              // Playtomic.Leaderboards.SaveAndList(
-              //   {
-              //     Name: this.playerName,
-              //     Points: parseInt(this.score, 10)
-              //   },
-              //   'score',
-              //   this.showRank.bind(this, this.playerName, parseInt(this.score, 10)),
-              //   {
-              //     allowduplicates: false
-              // });
-            }
-          }
+          init: function(div) {}
         }));
         this.modes.worldBestDiv.click(this.onmodeclick.bind(this,{
           div: this.modes.worldBestDiv,
@@ -474,16 +461,7 @@ var GliderScore = aqua.type(aqua.Component,
     showRank: function(name, score, list) {
       var rankDiv = $('.score:last .rank'),
           suffixes = ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'];
-      if (!list) {
-        // Playtomic.Leaderboards.List('score', function(list) {
-        //   rankDiv.html(list[0].Rank + suffixes[list[0].Rank % 10] + '&nbsp;' + list[0].Name );
-        // }, {
-        //   customfilters: {
-        //     'Name': name,
-        //     'Points': score
-        //   }
-        // });
-      } else if ( typeof list.Success == 'undefined' ) {
+      if ( typeof list.Success == 'undefined' ) {
         for ( var i = 0; i < list.length; i++ ) {
           if ( list[i].Name == name && list[i].Points == score ) {
             rankDiv.html( list[i].Rank + suffixes[list[i].Rank % 10] + '&nbsp;' + list[i].Name );
