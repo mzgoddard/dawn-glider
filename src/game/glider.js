@@ -411,11 +411,7 @@ var GliderScore = aqua.type(aqua.Component,
           setter: null
         }));
         
-        if (this.playerName == 'Player') {
-          this.modes.nameDiv.click();
-        } else {
-          this.modes.currentDiv.click();
-        }
+        this.modes.currentDiv.click();
       }).bind(this));
     },
     onmodeclick: function(options) {
